@@ -96,6 +96,12 @@ const TaskCard = ({ task }) => {
                 {task.description}
               </p>
             )}
+
+              {task.createdAt && (
+                <p className="mt-1 text-[10px] sm:text-xs text-gray-400">
+                  Created on {new Date(task.createdAt).toLocaleDateString()}
+                </p>
+              )}
           </div>
           <div className="flex sm:flex-col gap-1.5 sm:gap-2 justify-end mt-2 sm:mt-0 shrink-0">
             <motion.button
