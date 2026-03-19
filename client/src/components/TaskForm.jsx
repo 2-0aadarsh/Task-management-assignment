@@ -101,9 +101,6 @@ const TaskForm = ({ compact = false }) => {
   const handleBlur = (field) => {
     setTouched((prev) => ({ ...prev, [field]: true }));
     if (field === "dueDate") {
-      // Don't show "required" just for opening/closing the calendar.
-      // Required validation is enforced on submit.
-      if (!formData.dueDate) return;
       setDueDateError(validateDueDate(formData.dueDate));
     }
   };
@@ -149,7 +146,13 @@ const TaskForm = ({ compact = false }) => {
       setDueDateError("");
       setTouched({ title: false, description: false, dueDate: false });
     } catch (err) {
-      toast.error(err);
+      const message =
+        (typeof err === "string" && err) ||
+        err?.message ||
+        err?.error ||
+        JSON.stringify(err) ||
+        "Unable to create task";
+      toast.error(message);
     }
   };
 
@@ -230,6 +233,7 @@ const TaskForm = ({ compact = false }) => {
           type="button"
           ref={buttonRef}
           onClick={() => setShowCalendar(!showCalendar)}
+          onBlur={() => handleBlur("dueDate")}
           className={`${inputBase} text-left flex items-center justify-between ${
             touched.dueDate && dueDateError ? "border-rose-300" : ""
           }`}

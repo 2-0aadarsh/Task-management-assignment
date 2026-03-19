@@ -62,6 +62,7 @@ export const createTask = async (req, res) => {
       });
   
     } catch (error) {
+      console.error('❌ Create Task Error:', error);
       return res.status(500).json({
         status: "error",
         message: "Something went wrong while creating the task",
@@ -223,6 +224,7 @@ export const getTasks = async (req, res) => {
       });
   
     } catch (error) {
+      console.error('❌ Fetch Tasks Error:', error);
       return res.status(500).json({
         status: "error",
         message: "Unable to fetch tasks",
@@ -264,6 +266,7 @@ export const completeTask = async (req, res) => {
     });
 
   } catch (error) {
+    console.error('❌ Complete Task Error:', error);
     return res.status(500).json({
       status: "error",
       message: "Error updating task status",
@@ -304,6 +307,7 @@ export const deleteTask = async (req, res) => {
     });
 
   } catch (error) {
+    console.error('❌ Delete Task Error:', error);
     return res.status(500).json({
       status: "error",
       message: "Unable to delete task",

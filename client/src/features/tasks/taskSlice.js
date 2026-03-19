@@ -6,6 +6,12 @@ import {
   deleteTaskAPI,
 } from "./taskAPI";
 
+const formatErrorMessage = (error) =>
+  error?.response?.data?.message ||
+  error?.response?.data?.error ||
+  error?.message ||
+  "Something went wrong";
+
 // THUNKS
 export const fetchTasks = createAsyncThunk(
   "tasks/fetchTasks",
@@ -14,7 +20,7 @@ export const fetchTasks = createAsyncThunk(
       const res = await fetchTasksAPI(params);
       return res.data;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response?.data);
+      return thunkAPI.rejectWithValue(formatErrorMessage(err));
     }
   }
 );
@@ -30,7 +36,7 @@ export const createTask = createAsyncThunk(
       }
       return task;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response?.data);
+      return thunkAPI.rejectWithValue(formatErrorMessage(err));
     }
   }
 );
@@ -42,7 +48,7 @@ export const completeTask = createAsyncThunk(
       const res = await completeTaskAPI(id);
       return res.data.task;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response?.data);
+      return thunkAPI.rejectWithValue(formatErrorMessage(err));
     }
   }
 );
@@ -54,7 +60,7 @@ export const deleteTask = createAsyncThunk(
       await deleteTaskAPI(id);
       return id;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response?.data);
+      return thunkAPI.rejectWithValue(formatErrorMessage(err));
     }
   }
 );
