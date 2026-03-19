@@ -1,8 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import TaskCard from "./TaskCard";
 
-const TaskList = ({ tasks }) => {
-  if (!tasks.length) {
+const TaskList = ({ tasks = [] }) => {
+  const safeTasks = tasks.filter((t) => t && t._id);
+
+  if (!safeTasks.length) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -17,7 +19,7 @@ const TaskList = ({ tasks }) => {
   return (
     <div className="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
       <AnimatePresence>
-        {tasks.map((task) => (
+        {safeTasks.map((task) => (
           <motion.div
             key={task._id}
             initial={{ opacity: 0, y: 20 }}

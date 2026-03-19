@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000/tasks";
+const API_BASE_URL ="https://task-management-assignment-delta.vercel.app";
+
+const BASE_URL = `${API_BASE_URL.replace(/\/$/, "")}/tasks`;
 
 export const fetchTasksAPI = (params) =>
   axios.get(BASE_URL, { params });

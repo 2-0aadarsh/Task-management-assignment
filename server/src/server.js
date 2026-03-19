@@ -9,14 +9,17 @@ import { connectDB } from './configs/mongodb.config.js';
 const app = express();
 
 // middlewares
-app.use(cors());
+app.use(cors({
+    origin: "*", // for now
+}));
 app.use(express.json());
 
 // routes
-app.use('/', (req, res) => {
-  res.send('Hello World');
-});
 app.use('/tasks', taskRoutes);
+
+app.get('/', (req, res) => {
+    res.send('Hello World');
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, async () => {

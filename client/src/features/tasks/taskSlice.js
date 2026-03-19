@@ -24,7 +24,11 @@ export const createTask = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const res = await createTaskAPI(data);
-      return res.data.task;
+      const task = res?.data?.task;
+      if (!task || !task._id) {
+        return thunkAPI.rejectWithValue("Invalid server response while creating task");
+      }
+      return task;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response?.data);
     }
@@ -82,7 +86,7 @@ const taskSlice = createSlice({
       })
       .addCase(fetchTasks.fulfilled, (state, action) => {
         state.loading = false;
-        state.tasks = action.payload.tasks;
+        state.tasks = Array.isArray(action.payload?.tasks) ? action.payload.tasks : [];
         const nextPagination = action.payload.pagination || null;
         state.pagination =
           nextPagination && nextPagination.totalPages > 0 ? nextPagination : null;
@@ -96,6 +100,7 @@ const taskSlice = createSlice({
       })
 
       .addCase(createTask.fulfilled, (state, action) => {
+        if (!action.payload || !action.payload._id) return;
         // Keep pagination metadata in sync even without a refetch.
         const limit = state.pagination?.limit || 10;
         const currentPage = state.pagination?.currentPage || state.page || 1;

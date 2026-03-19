@@ -5,7 +5,7 @@ import TaskForm from "./TaskForm";
 import MiniCalendar from "./MiniCalendar";
 
 const Sidebar = () => {
-  const { tasks } = useSelector((state) => state.tasks);
+  const tasks = useSelector((state) => state?.tasks?.tasks) || [];
 
   const tasksDueToday = useMemo(() => {
     const toLocalDateKey = (date) => {
